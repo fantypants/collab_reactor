@@ -45,4 +45,7 @@ config :collab_reactor, CollabReactor.Repo,
   hostname: "localhost",
   pool_size: 10
 
-  import_config "dev.secret.exs"
+config :guardian, Guardian,
+    secret_key: "LG17BzmhBeq81Yyyn6vH7GVdrCkQpLktol2vdXlBzkRRHpYsZwluKMG9r6fnu90m"
+
+  #import_config "dev.secret.exs"
