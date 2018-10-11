@@ -2,14 +2,6 @@ defmodule CollabReactorWeb.Router do
   use CollabReactorWeb, :router
 
 
-  pipeline :browser do
-    plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_flash
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
-  end
-
   pipeline :api do
     plug :accepts, ["json"]
     plug Guardian.Plug.VerifyHeader, realm: "Bearer"
@@ -18,6 +10,9 @@ defmodule CollabReactorWeb.Router do
 
   scope "/api", CollabReactorWeb do
     pipe_through :api
+    get "/users/:id/rooms", UserController, :rooms
+    resources "/rooms", RoomController, only: [:index, :create]
+    post "/rooms/:id/join", RoomController, :join
     post "/sessions", SessionController, :create
     delete "/sessions", SessionController, :delete
     post "/sessions/refresh", SessionController, :refresh

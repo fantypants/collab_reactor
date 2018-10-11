@@ -1,10 +1,13 @@
 defmodule CollabReactorWeb.UserController do
   use CollabReactorWeb, :controller
 
-  alias Services.CollabReactor
+  #Salias Services.CollabReactor
+  alias CollabReactor.Repo
   alias Services.CollabReactor.User
 
   action_fallback CollabReactorWeb.FallbackController
+  plug Guardian.Plug.EnsureAuthenticated, [handler: CollabReactorWeb.SessionController] when action in [:rooms]
+
 
   def index(conn, _params) do
     users = CollabReactor.list_users()
@@ -21,11 +24,11 @@ defmodule CollabReactorWeb.UserController do
 
         new_conn
         |> put_status(:created)
-        |> render(Sling.SessionView, "show.json", user: user, jwt: jwt)
+        |> render(CollabReactorWeb.SessionView, "show.json", user: user, jwt: jwt)
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(Sling.ChangesetView, "error.json", changeset: changeset)
+        |> render(CollabReactorWeb.ChangesetView, "error.json", changeset: changeset)
     end
   end
 
@@ -47,5 +50,11 @@ defmodule CollabReactorWeb.UserController do
     with {:ok, %User{}} <- CollabReactor.delete_user(user) do
       send_resp(conn, :no_content, "")
     end
+  end
+
+  def rooms(conn, _params) do
+    current_user = Guardian.Plug.current_resource(conn)
+    rooms = Repo.all(Ecto.build_assoc(current_user, :rooms))
+    render(conn, CollabReactorWeb.RoomView, "index.json", %{rooms: rooms})
   end
 end

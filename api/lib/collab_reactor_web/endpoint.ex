@@ -31,12 +31,14 @@ defmodule CollabReactorWeb.Endpoint do
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
+
+  plug Corsica, allow_headers: ~w(Accept Content-Type Authorization Origin)
+  plug CollabReactorWeb.Router
+
   plug Plug.Session,
     store: :cookie,
     key: "_collab_reactor_key",
     signing_salt: "zVtBdkFM"
-
-  plug CollabReactorWeb.Router
 
   @doc """
   Callback invoked for dynamically configuring the endpoint.

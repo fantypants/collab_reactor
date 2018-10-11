@@ -1,7 +1,10 @@
 defmodule CollabReactorWeb.SessionController do
   use CollabReactorWeb, :controller
 
+  alias CollabReactor.Repo
+
   def create(conn, params) do
+    IO.puts "here"
     case authenticate(params) do
       {:ok, user} ->
         new_conn = Guardian.Plug.api_sign_in(conn, user, :access)
@@ -46,11 +49,11 @@ defmodule CollabReactorWeb.SessionController do
   def unauthenticated(conn, _params) do
     conn
     |> put_status(:forbidden)
-    |> render(Sling.SessionView, "forbidden.json", error: "Not Authenticated")
+    |> render(CollabReactorWeb.SessionView, "forbidden.json", error: "Not Authenticated")
   end
 
   defp authenticate(%{"email" => email, "password" => password}) do
-    user = Repo.get_by(Sling.User, email: String.downcase(email))
+    user = Repo.get_by(Services.CollabReactor.User, email: String.downcase(email))
 
     case check_password(user, password) do
       true -> {:ok, user}

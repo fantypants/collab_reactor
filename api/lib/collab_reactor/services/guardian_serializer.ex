@@ -1,4 +1,4 @@
-defmodule Services.GuardianSerializer do
+defmodule CollabReactor.Services.GuardianSerializer do
   @behaviour Guardian.Serializer
 
   alias CollabReactor.Repo

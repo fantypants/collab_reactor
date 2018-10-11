@@ -13,6 +13,16 @@ config :collab_reactor, CollabReactorWeb.Endpoint,
   check_origin: false,
   watchers: []
 
+config :collab_reactor, CollabReactorWeb.Endpoint,
+  live_reload: [
+    patterns: [
+      ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
+      ~r{priv/gettext/.*(po)$},
+      ~r{web/views/.*(ex)$},
+      ~r{web/templates/.*(eex)$}
+    ]
+  ]
+
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed
@@ -45,7 +55,7 @@ config :collab_reactor, CollabReactor.Repo,
   hostname: "localhost",
   pool_size: 10
 
-config :guardian, Guardian,
-    secret_key: "LG17BzmhBeq81Yyyn6vH7GVdrCkQpLktol2vdXlBzkRRHpYsZwluKMG9r6fnu90m"
+#config :guardian, Guardian,
+#    secret_key: "LG17BzmhBeq81Yyyn6vH7GVdrCkQpLktol2vdXlBzkRRHpYsZwluKMG9r6fnu90m"
 
   #import_config "dev.secret.exs"

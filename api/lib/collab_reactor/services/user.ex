@@ -5,17 +5,21 @@ defmodule Services.CollabReactor.User do
 
   schema "users" do
    field :username, :string
+   field :profession, :string
    field :email, :string
    field :password, :string, virtual: true
    field :password_hash, :string
 
+   many_to_many :rooms, CollabReactor.Services.Room, join_through: "user_rooms"
+   has_many :messages, CollabReactor.Services.Message
    timestamps()
  end
 
  def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:username, :email])
-    |> validate_required([:username, :email])
+    |> cast(params, [:username, :email, :profession])
+    |> cast_assoc(:messages)
+    |> validate_required([:username, :email, :profession])
     |> unique_constraint(:username)
     |> unique_constraint(:email)
   end
@@ -23,6 +27,7 @@ defmodule Services.CollabReactor.User do
   def registration_changeset(struct, params) do
     struct
     |> changeset(params)
+    |> cast_assoc(:messages)
     |> cast(params, [:password])
     |> validate_length(:password, min: 6, max: 100)
     |> put_password_hash()

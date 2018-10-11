@@ -2,7 +2,7 @@ defmodule CollabReactorWeb.SessionView do
   use CollabReactorWeb, :view
   def render("show.json", %{user: user, jwt: jwt}) do
     %{
-      data: render_one(user, Sling.UserView, "user.json"),
+      data: render_one(user, CollabReactorWeb.UserView, "user.json"),
       meta: %{token: jwt}
     }
   end
