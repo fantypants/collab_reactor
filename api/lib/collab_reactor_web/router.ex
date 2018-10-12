@@ -10,7 +10,9 @@ defmodule CollabReactorWeb.Router do
 
   scope "/api", CollabReactorWeb do
     pipe_through :api
+    get "/test", UserController, :test
     get "/users/:id/rooms", UserController, :rooms
+    get "/users/:id/interests", UserController, :interests
     resources "/rooms", RoomController, only: [:index, :create] do
       resources "/messages", MessageController, only: [:index]
     end

@@ -4,6 +4,8 @@ defmodule CollabReactorWeb.UserController do
   #Salias Services.CollabReactor
   alias CollabReactor.Repo
   alias Services.CollabReactor.User
+  alias CollabReactor.Services.Interest
+  import Ecto.Query
 
   action_fallback CollabReactorWeb.FallbackController
   plug Guardian.Plug.EnsureAuthenticated, [handler: CollabReactorWeb.SessionController] when action in [:rooms]
@@ -37,7 +39,7 @@ defmodule CollabReactorWeb.UserController do
     render(conn, "show.json", user: user)
   end
 
-  
+
 
   def update(conn, %{"id" => id, "user" => user_params}) do
     user = CollabReactor.get_user!(id)
@@ -54,9 +56,23 @@ defmodule CollabReactorWeb.UserController do
     end
   end
 
-  def rooms(conn, _params) do
+  def test(conn, _params) do
+    users = Services.CollabReactor.list_users()
+    CollabReactor.Services.Grouper.collect_group("1")
+    render(conn, "index.json", users: users)
+  end
+
+  def rooms(conn, params) do
     current_user = Guardian.Plug.current_resource(conn)
     rooms = Repo.all(Ecto.build_assoc(current_user, :rooms))
     render(conn, CollabReactorWeb.RoomView, "index.json", %{rooms: rooms})
   end
+
+  def interests(conn, _params) do
+    current_user = Guardian.Plug.current_resource(conn)
+    interests = Repo.all(Ecto.assoc(current_user, :interests))
+    render(conn, CollabReactorWeb.InterestView, "index.json", %{interests: interests})
+  end
+
+
 end
