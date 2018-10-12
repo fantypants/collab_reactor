@@ -1,12 +1,10 @@
-defmodule CollabReactor.Services.Group do
+defmodule CollabReactor.Services.Interest do
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "groups" do
+  schema "interests" do
     field :title, :string
-    has_many :interests, CollabReactor.Services.Interest
-
-
+    belongs_to :groups, CollabReactor.Services.Group, foreign_key: :group_id
     timestamps()
   end
 
@@ -15,8 +13,7 @@ defmodule CollabReactor.Services.Group do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:title])
-    |> cast_assoc(:interests)
+    |> cast(params, [:title, :group_id])
     |> validate_required([:title])
   end
 end
