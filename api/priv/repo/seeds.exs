@@ -8,8 +8,8 @@
 
 
 
-#changeset = Services.CollabReactor.User.registration_changeset(%Services.CollabReactor.User{}, %{email: "admin@gmail.com", username: "matthew", password: "password"})
-#CollabReactor.Repo.insert(changeset)
+changeset1 = Services.CollabReactor.User.registration_changeset(%Services.CollabReactor.User{}, %{email: "admin@gmail.com", username: "matthew", password: "password", profession: "Software Engineer"})
+CollabReactor.Repo.insert(changeset1)
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 changeset = CollabReactor.Services.Interest.changeset(%CollabReactor.Services.Interest{}, %{"title" => "Technology & Sports"})

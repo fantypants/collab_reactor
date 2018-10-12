@@ -15,6 +15,7 @@ defmodule CollabReactorWeb.Router do
       resources "/messages", MessageController, only: [:index]
     end
     post "/interests", InterestController, :create
+    post "/interests/:id/join", InterestController, :update_user_interest
     get "/interests", InterestController, :index
     post "/groups", GroupController, :create
     post "/rooms/:id/join", RoomController, :join

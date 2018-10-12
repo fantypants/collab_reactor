@@ -54,4 +54,5 @@ defmodule CollabReactorWeb.RoomController do
         |> render(CollabReactorWeb.ChangesetView, "error.json", changeset: changeset)
     end
   end
+
 end

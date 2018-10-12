@@ -5,6 +5,7 @@ defmodule CollabReactor.Services.Interest do
   schema "interests" do
     field :title, :string
     belongs_to :groups, CollabReactor.Services.Group, foreign_key: :group_id
+    many_to_many :users, Services.CollabReactor.User, join_through: "user_interests"
     timestamps()
   end
 

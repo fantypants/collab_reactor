@@ -9,15 +9,18 @@ defmodule Services.CollabReactor.User do
    field :email, :string
    field :password, :string, virtual: true
    field :password_hash, :string
+   field :interest, :string
 
    many_to_many :rooms, CollabReactor.Services.Room, join_through: "user_rooms"
+   many_to_many :interests, CollabReactor.Services.Interest, join_through: "user_interests"
    has_many :messages, CollabReactor.Services.Message
+
    timestamps()
  end
 
  def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:username, :email, :profession])
+    |> cast(params, [:username, :email, :profession, :interest])
     |> cast_assoc(:messages)
     |> validate_required([:username, :email, :profession])
     |> unique_constraint(:username)

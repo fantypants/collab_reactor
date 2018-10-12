@@ -37,6 +37,8 @@ defmodule CollabReactorWeb.UserController do
     render(conn, "show.json", user: user)
   end
 
+  
+
   def update(conn, %{"id" => id, "user" => user_params}) do
     user = CollabReactor.get_user!(id)
 

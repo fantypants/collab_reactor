@@ -1,0 +1,13 @@
+defmodule :"Elixir.CollabReactor.Repo.Migrations.Adding interests to users" do
+  use Ecto.Migration
+
+  def change do
+    alter table(:interests) do
+      add :user_id, references(:users, on_delete: :nothing)
+    end
+    alter table(:users) do
+      add :interest, :integer
+    end
+    create index(:interests, [:user_id])
+  end
+end
