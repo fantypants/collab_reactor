@@ -37,6 +37,14 @@ defmodule CollabReactorWeb.Channels.RoomChannel do
     end
   end
 
+  def handle_info(:after_join, socket) do
+    CollabReactorWeb.Presence.track(socket, socket.assigns.current_user.id, %{
+      user: Phoenix.View.render_one(socket.assigns.current_user, CollabReactorWeb.UserView, "user.json")
+    })
+    push(socket, "presence_state", Sling.Presence.list(socket))
+    {:noreply, socket}
+  end
+
   def terminate(_reason, socket) do
     {:ok, socket}
   end
