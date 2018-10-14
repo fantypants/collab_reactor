@@ -6,6 +6,12 @@ defmodule CollabReactorWeb.GroupController do
 
   plug Guardian.Plug.EnsureAuthenticated, handler: CollabReactorWeb.SessionController
 
+
+  def index(conn, _params) do
+    groups = Repo.all(Group) |> IO.inspect
+    render(conn, "index.json", groups: groups)
+  end
+
   def create(conn, params) do
     current_user = Guardian.Plug.current_resource(conn)
     changeset = Group.changeset(%Group{}, %{"title" => "New Random Title"})

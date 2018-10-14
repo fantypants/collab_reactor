@@ -58,6 +58,19 @@ defmodule CollabReactor.Services.Grouper do
     for h <- list, t <- of(list -- [h]), do: [h | t]
   end
 
+  defp get_uniq_professions(map) do
+    Enum.group_by(map, fn user -> user.profession end)
+  end
+
+  defp find_professionals(map) do
+    keys = Map.keys(map)
+    keys |> Enum.map(fn(key) -> get_professional(map["#{key}"]) end)
+  end
+  defp get_professional(list) do
+    IO.puts "Finding the Professional"
+    Enum.take_random(list, 1)
+  end
+
 
   defp validate_group(list) do
     valid_groups = of(@valid_pairsA) ++ of(@valid_pairsB) ++ of(@valid_pairsC)
@@ -73,7 +86,10 @@ defmodule CollabReactor.Services.Grouper do
   def get_by_profession(list) do
     {size, map} = list
     valid_group = map |> Enum.reduce([], fn (profession, acc) -> List.insert_at(acc, 0, profession.profession) end)
-    validate = of(valid_group) |> Enum.map(fn grouping -> validate_group(grouping) end)
-    {size, map, List.first(validate)}
+    #validate = of(valid_group) |> Enum.map(fn grouping -> validate_group(grouping) end)
+    map |> get_uniq_professions
+        |> find_professionals
+        |> IO.inspect
+    {size, map}
   end
 end

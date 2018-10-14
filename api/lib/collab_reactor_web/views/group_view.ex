@@ -11,6 +11,6 @@ defmodule CollabReactorWeb.GroupView do
 
   def render("group.json", %{group: group}) do
     %{id: group.id,
-      name: group.title}
+      title: group.title}
   end
 end

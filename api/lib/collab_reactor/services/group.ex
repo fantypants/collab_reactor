@@ -5,7 +5,7 @@ defmodule CollabReactor.Services.Group do
   schema "groups" do
     field :title, :string
     has_many :interests, CollabReactor.Services.Interest
-
+    many_to_many :users, Services.CollabReactor.User, join_through: "user_groups"
 
     timestamps()
   end

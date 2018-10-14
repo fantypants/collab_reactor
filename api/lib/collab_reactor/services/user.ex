@@ -13,6 +13,7 @@ defmodule Services.CollabReactor.User do
 
    many_to_many :rooms, CollabReactor.Services.Room, join_through: "user_rooms"
    many_to_many :interests, CollabReactor.Services.Interest, join_through: "user_interests"
+   many_to_many :groups, CollabReactor.Services.Group, join_through: "user_groups"
    has_many :messages, CollabReactor.Services.Message
 
    timestamps()
