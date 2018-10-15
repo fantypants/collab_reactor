@@ -4,6 +4,7 @@ defmodule CollabReactorWeb.GroupController do
   alias CollabReactor.Services.Group
   alias Services.CollabReactor.User
   alias CollabReactor.Services.UserGroup
+  alias CollabReactorWeb.DirectMessageController
   import Ecto.Query
 
   plug Guardian.Plug.EnsureAuthenticated, handler: CollabReactorWeb.SessionController
@@ -31,13 +32,12 @@ defmodule CollabReactorWeb.GroupController do
     end
     with {:ok, group} <- create_private(interest) do
       group_id = group.id
-      result = group_map |> Enum.map(fn user -> %{user_id: user.id, profession: user.profession, group_id: group_id} end)
+      result = group_map |> Enum.map(fn user -> %{user_id: user.user_id, profession: user.profession, group_id: group_id} end)
+      IO.inspect result
+      DirectMessageController.format_and_insert(result)
     end
-    IO.inspect result
-    #Find All Users Needed
-    #Add Current User
-    #Create Group
-    #Put group ID in map
+
+
     #Insert all data into the user_pm_table
     groups = Repo.all(Group)
     render(conn, "index.json", groups: groups)
