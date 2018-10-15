@@ -21,6 +21,7 @@ defmodule CollabReactorWeb.Router do
     get "/interests", InterestController, :index
     get "/groups", GroupController, :index
     post "/groups", GroupController, :create
+    post "/groups/new", GroupController, :collect_and_create_group
     post "/rooms/:id/join", RoomController, :join
     post "/sessions", SessionController, :create
     delete "/sessions", SessionController, :delete

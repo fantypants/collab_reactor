@@ -4,7 +4,6 @@ defmodule CollabReactorWeb.SessionController do
   alias CollabReactor.Repo
 
   def create(conn, params) do
-    IO.puts "here"
     case authenticate(params) do
       {:ok, user} ->
         new_conn = Guardian.Plug.api_sign_in(conn, user, :access)

@@ -30,9 +30,11 @@ defmodule CollabReactor.Services.Grouper do
 
   def collect_group(id) do
     interest_ids = get_user_interests(id)
-    user_interest_map = interest_ids |> Enum.map(fn id -> get_users_with_interests(id) end) |> IO.inspect
-    sized_common_interest = user_interest_map |> get_most_common_interest |> IO.inspect
-    by_profession = sized_common_interest |> Enum.map(fn list -> get_by_profession(list) end) |> IO.inspect
+    user_interest_map = interest_ids |> Enum.map(fn id -> get_users_with_interests(id) end)
+    sized_common_interest = user_interest_map |> get_most_common_interest
+    by_profession = sized_common_interest |> Enum.map(fn list -> get_by_profession(list) end)
+    final_list = by_profession
+      |> create_final_list
   end
 
   def get_user_interests(id) do
@@ -87,9 +89,19 @@ defmodule CollabReactor.Services.Grouper do
     {size, map} = list
     valid_group = map |> Enum.reduce([], fn (profession, acc) -> List.insert_at(acc, 0, profession.profession) end)
     #validate = of(valid_group) |> Enum.map(fn grouping -> validate_group(grouping) end)
-    map |> get_uniq_professions
-        |> find_professionals
-        |> IO.inspect
-    {size, map}
+    mapped_professionals = map |> get_uniq_professions
+                               |> find_professionals
+    {Enum.count(mapped_professionals), List.flatten(mapped_professionals)}
+  end
+
+  defp create_final_list(list) do
+    {size, final_candidates} = list
+                        |> Enum.reject(fn({k,v}) -> k <2 end)
+                        |> Enum.max
+    if size > 5 do
+      final_candidates |> Enum.take_random(5)
+    else
+      final_candidates
+    end
   end
 end
