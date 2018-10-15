@@ -27,5 +27,6 @@ defmodule CollabReactorWeb.Router do
     delete "/sessions", SessionController, :delete
     post "/sessions/refresh", SessionController, :refresh
     resources "/users", UserController, only: [:create]
+    get "users/messages", UserMessageController, :index
   end
 end
