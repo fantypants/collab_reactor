@@ -18,3 +18,19 @@ CollabReactor.Repo.insert(changeset3)
 # and so on) as they will fail if something goes wrong.
 changeset = CollabReactor.Services.Interest.changeset(%CollabReactor.Services.Interest{}, %{"title" => "Technology & Sports"})
 CollabReactor.Repo.insert!(changeset)
+
+changeset_interest1 = CollabReactor.Services.UserInterest.changeset(
+  %CollabReactor.Services.UserInterest{},
+  %{user_id: 1, interest_id: 1}
+)
+changeset_interest2 = CollabReactor.Services.UserInterest.changeset(
+  %CollabReactor.Services.UserInterest{},
+  %{user_id: 2, interest_id: 1}
+)
+changeset_interest3 = CollabReactor.Services.UserInterest.changeset(
+  %CollabReactor.Services.UserInterest{},
+  %{user_id: 3, interest_id: 1}
+)
+CollabReactor.Repo.insert!(changeset_interest1)
+CollabReactor.Repo.insert!(changeset_interest2)
+CollabReactor.Repo.insert!(changeset_interest3)

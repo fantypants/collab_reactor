@@ -48,7 +48,9 @@ defmodule CollabReactorWeb.GroupController do
     with {:ok, group} <- create_private(interest) do
       group_id = group.id
       result = group_map |> Enum.map(fn user -> %{user_id: user.user_id, profession: user.profession, group_id: group_id} end)
+
       UserMessageController.format_and_insert(result)
+      RoomController.create_group_room(conn, group_id)
     end
 
     groups = Repo.all(Group)
@@ -103,6 +105,7 @@ defmodule CollabReactorWeb.GroupController do
     )
     case Repo.insert(changeset) do
       {:ok, group} ->
+        RoomController.join_group_room(current_user.id, group_id)
         conn
         |> put_status(:created)
         |> render("show.json", group: group)

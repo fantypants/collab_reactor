@@ -65,6 +65,29 @@ defmodule CollabReactorWeb.RoomController do
     render(conn, "index.json", rooms: rooms)
   end
 
+  def join_group_room(user_id, group_id) do
+    IO.puts "Joining Group Room: Group ID #{group_id}"
+    query = from g in GroupRoom, where: g.group_id == ^group_id
+    group_rooms = Repo.all(query) |> Repo.preload(:room) |> IO.inspect
+      |> Enum.map(fn group_room -> join_raw(user_id, group_room.room_id) end)
+  end
+
+  def join_raw(user_id, room_id) do
+    room = Repo.get(Room, room_id)
+
+    changeset = UserRoom.changeset(
+      %UserRoom{},
+      %{room_id: room_id, user_id: user_id}
+    )
+
+    case Repo.insert(changeset) do
+      {:ok, _user_room} ->
+        IO.puts "Worked. User Joined Room automatically"
+      {:error, changeset} ->
+        IO.inspect changeset
+    end
+  end
+
   def join(conn, %{"id" => room_id}) do
     current_user = Guardian.Plug.current_resource(conn)
     room = Repo.get(Room, room_id)
