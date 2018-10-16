@@ -4,16 +4,24 @@ defmodule CollabReactorWeb.GroupController do
   alias CollabReactor.Services.Group
   alias Services.CollabReactor.User
   alias CollabReactor.Services.UserGroup
+  alias CollabReactorWeb.RoomController
   alias CollabReactorWeb.UserMessageController
   import Ecto.Query
 
-  plug Guardian.Plug.EnsureAuthenticated, handler: CollabReactorWeb.SessionController
+  #plug Guardian.Plug.EnsureAuthenticated, handler: CollabReactorWeb.SessionController
 
 
   def index(conn, _params) do
     groups = Repo.all(Group)
     render(conn, "index.json", groups: groups)
   end
+
+  def test(conn, _params) do
+    g_id = 1
+    #RoomController.create_group_room(conn, g_id)
+  end
+
+
 
   def user_index(conn, _params) do
     current_user = Guardian.Plug.current_resource(conn)
@@ -40,12 +48,9 @@ defmodule CollabReactorWeb.GroupController do
     with {:ok, group} <- create_private(interest) do
       group_id = group.id
       result = group_map |> Enum.map(fn user -> %{user_id: user.user_id, profession: user.profession, group_id: group_id} end)
-      IO.inspect result
       UserMessageController.format_and_insert(result)
     end
 
-
-    #Insert all data into the user_pm_table
     groups = Repo.all(Group)
     render(conn, "index.json", groups: groups)
   end

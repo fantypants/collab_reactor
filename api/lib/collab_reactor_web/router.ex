@@ -10,7 +10,7 @@ defmodule CollabReactorWeb.Router do
 
   scope "/api", CollabReactorWeb do
     pipe_through :api
-    get "/test", UserController, :test
+    get "/test", GroupController, :test
     get "/users/:id/rooms", UserController, :rooms
     get "/users/:id/interests", UserController, :interests
     resources "/rooms", RoomController, only: [:index, :create] do
@@ -20,6 +20,8 @@ defmodule CollabReactorWeb.Router do
     post "/interests/:id/join", InterestController, :update_user_interest
     get "/interests", InterestController, :index
     get "/groups", GroupController, :index
+    get "/groups/:id/users", UserController, :group_users
+    get "/groups/:id/rooms", RoomController, :group_rooms
     get "/user/groups", GroupController, :user_index
     post "/groups", GroupController, :create
     post "/groups/new", GroupController, :collect_and_create_group

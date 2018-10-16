@@ -4,6 +4,7 @@ defmodule CollabReactorWeb.UserController do
   #Salias Services.CollabReactor
   alias CollabReactor.Repo
   alias Services.CollabReactor.User
+  alias CollabReactor.Services.Group
   alias CollabReactor.Services.Interest
   import Ecto.Query
 
@@ -14,6 +15,12 @@ defmodule CollabReactorWeb.UserController do
   def index(conn, _params) do
     users = CollabReactor.list_users()
     render(conn, "index.json", users: users)
+  end
+
+  def group_users(conn, params) do
+    group = Repo.get!(Group, params["id"]) |> Repo.preload(:users)
+    users = group.users |> IO.inspect
+    render(conn, "users_group.json", users: users)
   end
 
   def create(conn, params) do

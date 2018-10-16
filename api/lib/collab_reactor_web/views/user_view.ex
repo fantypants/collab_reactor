@@ -17,4 +17,15 @@ defmodule CollabReactorWeb.UserView do
       email: user.email,
     }
   end
+
+  def render("users_group.json", %{users: users}) do
+    %{data: render_many(users, CollabReactorWeb.UserView, "users.json")}
+  end
+
+  def render("users.json", %{user: user}) do
+    %{username: user.username,
+      profession: user.profession}
+  end
+
+
 end
