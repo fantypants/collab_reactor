@@ -11,8 +11,15 @@ defmodule CollabReactorWeb.GroupController do
 
 
   def index(conn, _params) do
-    groups = Repo.all(Group) |> IO.inspect
+    groups = Repo.all(Group)
     render(conn, "index.json", groups: groups)
+  end
+
+  def user_index(conn, _params) do
+    current_user = Guardian.Plug.current_resource(conn)
+    query = from u in UserGroup, where: u.user_id == ^current_user.id
+    groups = Repo.all(query) |> IO.inspect
+    render(conn, "user_index.json", groups: groups)
   end
 
   def collect_and_create_group(conn, params) do
@@ -93,7 +100,7 @@ defmodule CollabReactorWeb.GroupController do
       {:ok, group} ->
         conn
         |> put_status(:created)
-        |> render("user_group_show.json", group: group)
+        |> render("show.json", group: group)
       {:error, changeset} ->
         IO.inspect changeset
         conn

@@ -20,9 +20,11 @@ defmodule CollabReactorWeb.Router do
     post "/interests/:id/join", InterestController, :update_user_interest
     get "/interests", InterestController, :index
     get "/groups", GroupController, :index
+    get "/user/groups", GroupController, :user_index
     post "/groups", GroupController, :create
     post "/groups/new", GroupController, :collect_and_create_group
     post "/rooms/:id/join", RoomController, :join
+    post "/groups/:id/join", GroupController, :update_user_group
     post "/sessions", SessionController, :create
     delete "/sessions", SessionController, :delete
     post "/sessions/refresh", SessionController, :refresh

@@ -64,7 +64,7 @@ defmodule CollabReactorWeb.UserController do
 
   def rooms(conn, params) do
     current_user = Guardian.Plug.current_resource(conn)
-    rooms = Repo.all(Ecto.build_assoc(current_user, :rooms))
+    rooms = Repo.all(Ecto.assoc(current_user, :rooms))
     render(conn, CollabReactorWeb.RoomView, "index.json", %{rooms: rooms})
   end
 
